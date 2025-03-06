@@ -13,27 +13,59 @@
             <div class="status-dot" id="status-dot"></div>
             <p id="status-text">Checking...</p>
         </div>
+        <div class="connection-info">
+            <p><strong>ID:</strong> <span id="server-id">Not available</span></p>
+            <p><strong>Host:</strong> <span id="server-host">Not available</span></p>
+            <p><strong>Password:</strong> <span id="server-password">Not available</span></p>
+            <p><strong>Port:</strong> <span id="server-port">Not available</span></p>
+            <p><strong>Secure:</strong> <span id="server-secure">Not available</span></p>
+            <p><strong>Last Checked:</strong> <span id="last-checked">Not yet checked</span></p>
+        </div>
     </div>
     <script>
         async function checkLavalink() {
+            const lastChecked = document.getElementById('last-checked');
+            const serverId = document.getElementById('server-id');
+            const serverHost = document.getElementById('server-host');
+            const serverPassword = document.getElementById('server-password');
+            const serverPort = document.getElementById('server-port');
+            const serverSecure = document.getElementById('server-secure');
+
+            const connectionInfo = {
+                id: 'Astral-link',  
+                host: '38.22.104.155',
+                password: 'YFJ40986iupotr5EV',   
+                port: 1094,                  
+                secure: false                 
+            };
+
+            serverId.textContent = connectionInfo.id;
+            serverHost.textContent = connectionInfo.host;
+            serverPassword.textContent = connectionInfo.password;
+            serverPort.textContent = connectionInfo.port;
+            serverSecure.textContent = connectionInfo.secure ? 'Yes' : 'No';
+
             try {
-                const response = await fetch('https://stats.uptimerobot.com/uVxJ5ZVSop'); // Replace with actual Uptime Robot API URL if necessary
+                const response = await fetch('https://stats.uptimerobot.com/uVxJ5ZVSop');
                 const data = await response.json();
 
-                const status = data.monitors[0].status; // Assuming the status is in the first monitor
-                if (status === 2) {  // Uptime Robot status 2 means "Online"
+                const status = data.monitors[0].status; 
+                if (status === 2) {  
                     document.getElementById('status-dot').style.backgroundColor = 'limegreen';
                     document.getElementById('status-text').textContent = 'Online';
-                } else if (status === 9) {  // Uptime Robot status 9 means "Offline"
+                } else if (status === 9) {  
                     document.getElementById('status-dot').style.backgroundColor = 'red';
                     document.getElementById('status-text').textContent = 'Offline';
                 } else {
-                    document.getElementById('status-dot').style.backgroundColor = 'orange'; // For other statuses
+                    document.getElementById('status-dot').style.backgroundColor = 'orange';
                     document.getElementById('status-text').textContent = 'Status Unknown';
                 }
+
+                lastChecked.textContent = new Date().toLocaleString();
             } catch (error) {
                 document.getElementById('status-dot').style.backgroundColor = 'red';
                 document.getElementById('status-text').textContent = 'Offline';
+                lastChecked.textContent = 'Failed to fetch status';
             }
         }
         checkLavalink();
