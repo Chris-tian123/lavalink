@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lavalink Status</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Lavalink Status</h1>
+        <div class="status-card">
+            <div class="status-dot" id="status-dot"></div>
+            <p id="status-text">Checking...</p>
+        </div>
+    </div>
+    <script>
+        async function checkLavalink() {
+            try {
+                const response = await fetch('http://your-lavalink-server:2333');
+                if (response.ok) {
+                    document.getElementById('status-dot').style.backgroundColor = 'limegreen';
+                    document.getElementById('status-text').textContent = 'Online';
+                } else {
+                    document.getElementById('status-dot').style.backgroundColor = 'red';
+                    document.getElementById('status-text').textContent = 'Offline';
+                }
+            } catch (error) {
+                document.getElementById('status-dot').style.backgroundColor = 'red';
+                document.getElementById('status-text').textContent = 'Offline';
+            }
+        }
+        checkLavalink();
+    </script>
+</body>
+</html>
